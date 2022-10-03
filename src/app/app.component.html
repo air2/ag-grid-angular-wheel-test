@@ -4,5 +4,6 @@
   class="ag-theme-alpine"
   [rowData]="rowData | async"
   [columnDefs]="columnDefs"
+  (gridReady)="mappingsGridOnReady($event)"
 >
 </ag-grid-angular>
