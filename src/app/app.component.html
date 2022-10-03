@@ -1,7 +1,8 @@
 <ag-grid-angular
+  #agGrid
   style="width: 500px; height: 150px;"
   class="ag-theme-alpine"
-  [rowData]="rowData"
+  [rowData]="rowData | async"
   [columnDefs]="columnDefs"
 >
 </ag-grid-angular>
