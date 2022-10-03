@@ -1,8 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { AgGridAngular } from 'ag-grid-angular';
-import { ColDef } from 'ag-grid-community';
-import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { Component } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 
 interface IAthlete {
   age: number;
@@ -22,51 +20,20 @@ interface IAthlete {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements AfterViewInit {
-  // @ViewChild('agGrid')
-  // public agGrid: AgGridAngular;
-  columnDefs: ColDef[] = [
+export class AppComponent {
+  columnDefs = [
     { field: 'athlete', headerName: 'Name', minWidth: 150 },
     { field: 'age', maxWidth: 90 },
   ];
-  readonly rowData = new BehaviorSubject<IAthlete[]>([]);
 
-  constructor(private http: HttpClient) {
-    //    const client = new HttpClient()
-  }
-
-  async loadGridData() {
-    const data = await firstValueFrom(
-      this.http.get<IAthlete[]>(
-        'https://www.ag-grid.com/example-assets/olympic-winners.json'
-      )
-    );
-    console.log(data[2]);
-    this.rowData.next(data);
-    // this.agGrid.api.hideOverlay();
-  }
-
-  public ngAfterViewInit(): void {
-    //    this.agGrid.api.showLoadingOverlay();
-    // this.agGrid.firstDataRendered.subscribe(() => {
-    //   this.firstDataRendered.bind(this);
-    // });
-    // this.subscribe(this.agGrid.firstDataRendered, this.firstDataRendered.bind(this))
-    // this.loadGridData();
-  }
+  constructor(private http: HttpClient) {}
 
   public async mappingsGridOnReady(event) {
-    console.log('Mappings grid ready...');
-    const gridApi = event.api;
     const data = await firstValueFrom(
       this.http.get<IAthlete[]>(
         'https://www.ag-grid.com/example-assets/olympic-winners.json'
       )
     );
-    gridApi.setRowData(data ?? []);
-  }
-
-  private firstDataRendered(): void {
-    // this.agGrid.columnApi.autoSizeAllColumns();
+    event.api.setRowData(data ?? []);
   }
 }
